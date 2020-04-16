@@ -2,8 +2,13 @@
 #ifndef FINALPROJECT_MYLIBRARY_EXAMPLE_H_
 #define FINALPROJECT_MYLIBRARY_EXAMPLE_H_
 
+#include <string>;
+
+using namespace std;
+
 
 namespace mylibrary {
+
 
 }  // namespace mylibrary
 

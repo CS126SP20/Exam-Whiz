@@ -70,6 +70,8 @@ add_subdirectory(tests)
 
 ############## Third-party Libraries #####################
 
+
+
 # Testing library. Header-only.
 FetchContent_Declare(
     catch2
@@ -82,8 +84,52 @@ FetchContent_GetProperties(catch2)
 if(NOT catch2_POPULATED)
     FetchContent_Populate(catch2)
     # This is overkill since we only need a single file. Though it is a clean solution.
-    add_library(catch2 INTERFACE)
+    add_library(catch2 src/user_database.cpp include/mylibrary/user_database.h)
     target_include_directories(catch2 INTERFACE ${catch2_SOURCE_DIR}/single_include)
 endif()
 
 # Add more CMake libraries here ...
+
+
+FetchContent_Declare(
+        sqlite-modern-cpp
+        GIT_REPOSITORY https://github.com/SqliteModernCpp/sqlite_modern_cpp.git
+        GIT_TAG a0f96c10f04d96ccea1b8a49d5998c96e7887bf4
+)
+
+# Adds sqlite_modern_cpp.
+FetchContent_GetProperties(sqlite-modern-cpp)
+if (NOT sqlite-modern-cpp_POPULATED)
+    FetchContent_Populate(sqlite-modern-cpp)
+    add_library(sqlite-modern-cpp INTERFACE)
+    target_include_directories(sqlite-modern-cpp INTERFACE ${sqlite-modern-cpp_SOURCE_DIR}/hdr)
+endif ()
+
+
+# JSON Library. Header-only.
+FetchContent_Declare(
+        nlohmann_json
+        URL https://github.com/nlohmann/json/releases/download/v3.7.3/include.zip
+)
+
+# Adds nlohmann_json library.
+FetchContent_GetProperties(nlohmann_json)
+if (NOT nlohmann_json_POPULATED)
+    FetchContent_Populate(nlohmann_json)
+    add_library(nlohmann_json INTERFACE)
+    target_include_directories(nlohmann_json INTERFACE ${nlohmann_json_SOURCE_DIR}/single_include)
+endif ()
+
+FetchContent_Declare(
+        sqlite3
+        GIT_REPOSITORY https://github.com/alex85k/sqlite3-cmake.git
+        GIT_TAG v3.24.0
+)
+
+# Adds sqlite3
+FetchContent_GetProperties(sqlite3)
+if (NOT sqlite3_POPULATED)
+    FetchContent_Populate(sqlite3)
+    add_subdirectory(${sqlite3_SOURCE_DIR} ${sqlite3_BINARY_DIR})
+    target_include_directories(sqlite3 INTERFACE ${sqlite3_SOURCE_DIR}/src)
+endif ()
