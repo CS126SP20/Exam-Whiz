@@ -20,7 +20,7 @@ ci_make_library(
         SOURCES      ${SOURCE_LIST}
         INCLUDES     "${FinalProject_SOURCE_DIR}/include"
         LIBRARIES
-        BLOCKS
+        BLOCKS Cinder-ImGui
 )
 
 # All users of this library will need at least C++14
@@ -30,9 +30,11 @@ set_property(TARGET mylibrary PROPERTY
         MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 target_link_libraries(mylibrary sqlite-modern-cpp sqlite3)
+# We need this directory, and users of our library will need it too
+target_include_directories(mylibrary PUBLIC ../include)
 
-
-# Cross-platform compiler lints
+target_link_libraries(mylibrary rapidjson)
+ # Cross-platform compiler lints
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"
         OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     target_compile_options(mylibrary PRIVATE

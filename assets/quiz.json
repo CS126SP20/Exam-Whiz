@@ -1,0 +1,66 @@
+{
+  "quizcode": 1000,
+  "maxscore": 100,
+  "Questions": [
+    {
+      "is_mcq": true,
+      "description": "What is 1 + 1 ?",
+      "correct_option": 3,
+      "correct_answer": "2",
+      "max_marks": 20,
+      "options": [
+        "3",
+        "4",
+        "5",
+        "2"
+      ]
+    },
+    {
+      "is_mcq": true,
+      "description": "What is 2 + 1 ?",
+      "correct_option": 0,
+      "correct_answer": "3",
+      "max_marks": 20,
+      "options": [
+        "3",
+        "4",
+        "5",
+        "2"
+      ]
+    },
+    {
+      "is_mcq": true,
+      "description": "What is 2 + 2 ?",
+      "correct_option": 1,
+      "correct_answer": "4",
+      "max_marks": 20,
+      "options": [
+        "3",
+        "4",
+        "5",
+        "2"
+      ]
+    },
+    {
+      "is_mcq": true,
+      "description": "What is 2 + 3 ?",
+      "correct_option": 2,
+      "correct_answer": "5",
+      "max_marks": 20,
+      "options": [
+        "3",
+        "4",
+        "5",
+        "2"
+      ]
+    },
+    {
+      "is_mcq": false,
+      "description": "What is 3 + 3 ?",
+      "correct_option": -1,
+      "correct_answer": "6",
+      "max_marks": 20,
+      "options": []
+    }
+  ]
+}

@@ -84,7 +84,7 @@ FetchContent_GetProperties(catch2)
 if(NOT catch2_POPULATED)
     FetchContent_Populate(catch2)
     # This is overkill since we only need a single file. Though it is a clean solution.
-    add_library(catch2 src/user_database.cpp include/mylibrary/user_database.h)
+    add_library(catch2 src/user_database.cpp include/mylibrary/user_database.h src/quiz.cpp include/mylibrary/quiz.h)
     target_include_directories(catch2 INTERFACE ${catch2_SOURCE_DIR}/single_include)
 endif()
 
@@ -108,17 +108,18 @@ endif ()
 
 # JSON Library. Header-only.
 FetchContent_Declare(
-        nlohmann_json
-        URL https://github.com/nlohmann/json/releases/download/v3.7.3/include.zip
+        rapidjson
+        GIT_REPOSITORY https://github.com/Tencent/rapidjson.git
+        GIT_TAG v1.1.0
 )
 
-# Adds nlohmann_json library.
-FetchContent_GetProperties(nlohmann_json)
-if (NOT nlohmann_json_POPULATED)
-    FetchContent_Populate(nlohmann_json)
-    add_library(nlohmann_json INTERFACE)
-    target_include_directories(nlohmann_json INTERFACE ${nlohmann_json_SOURCE_DIR}/single_include)
-endif ()
+
+FetchContent_GetProperties(rapidjson)
+if(NOT rapidjson_POPULATED)
+    FetchContent_Populate(rapidjson)
+    add_library(rapidjson INTERFACE)
+    target_include_directories(rapidjson INTERFACE ${rapidjson_SOURCE_DIR}/include/rapidjson)
+endif()
 
 FetchContent_Declare(
         sqlite3
