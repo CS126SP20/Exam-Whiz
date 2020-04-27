@@ -1,64 +1,67 @@
 {
+  "quizcreator": "Aryaman",
+  "quizinfo": "Sample Quiz One",
   "quizcode": 1000,
   "maxscore": 100,
   "Questions": [
     {
       "is_mcq": true,
-      "description": "What is 1 + 1 ?",
-      "correct_option": 3,
-      "correct_answer": "2",
-      "max_marks": 20,
-      "options": [
-        "3",
-        "4",
-        "5",
-        "2"
-      ]
-    },
-    {
-      "is_mcq": true,
-      "description": "What is 2 + 1 ?",
-      "correct_option": 0,
-      "correct_answer": "3",
-      "max_marks": 20,
-      "options": [
-        "3",
-        "4",
-        "5",
-        "2"
-      ]
-    },
-    {
-      "is_mcq": true,
-      "description": "What is 2 + 2 ?",
-      "correct_option": 1,
-      "correct_answer": "4",
-      "max_marks": 20,
-      "options": [
-        "3",
-        "4",
-        "5",
-        "2"
-      ]
-    },
-    {
-      "is_mcq": true,
-      "description": "What is 2 + 3 ?",
+      "description": "What is the capital of India ?",
       "correct_option": 2,
-      "correct_answer": "5",
+      "correct_answer": "Mumbai",
       "max_marks": 20,
       "options": [
-        "3",
-        "4",
-        "5",
-        "2"
+        "Washington DC",
+        "New York",
+        "Delhi",
+        "Mumbai"
+      ]
+    },
+    {
+      "is_mcq": true,
+      "description": "Who is the founder of Apple ?",
+      "correct_option": 0,
+      "correct_answer": "Steve Jobs",
+      "max_marks": 20,
+      "options": [
+        "Steve Jobs",
+        "Bill Gates",
+        "Mark Zuckerberg",
+        "Satya Nadella"
+      ]
+    },
+    {
+      "is_mcq": true,
+      "description": "Which of the following is not a Planet ?",
+      "correct_option": 2,
+      "correct_answer": "Moon",
+      "max_marks": 20,
+      "options": [
+        "Earth",
+        "Saturn",
+        "Moon",
+        "Jupiter",
+        "Mars",
+        "Venus",
+        "Uranus"
+      ]
+    },
+    {
+      "is_mcq": true,
+      "description": "Is Earth Round ?",
+      "correct_option": 1,
+      "correct_answer": "false",
+      "max_marks": 20,
+      "options": [
+        "true",
+        "false"
       ]
     },
     {
       "is_mcq": false,
-      "description": "What is 3 + 3 ?",
+      "description": "What is 25 divided by 5 ?",
       "correct_option": -1,
-      "correct_answer": "6",
+      "correct_answer": "5",
       "max_marks": 20,
       "options": []
     }
