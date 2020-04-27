@@ -36,19 +36,67 @@ class MyApp : public cinder::app::App {
   char temp_answer[30];
  public:
   MyApp();
+
+  /**
+   * Initializes all the variables to a default value
+   */
   void setup() override;
   void update() override;
+
+  /**
+   * Manages which page needs to be drawn
+   */
   void draw() override;
-  void keyDown(cinder::app::KeyEvent) override;
+
+  /**
+   * Draws the login and signup page
+   */
   void DrawLoginPage();
+
+  /**
+   * Checks if the user exists and his password is correct
+   */
   void Login();
+
+  /**
+   * Creates a new user and pass the info to the database
+   */
   void SignUp();
+
+  /**
+   * Gets the path for the quiz which the user plans to take
+   */
   void SetupQuiz();
+
+  /**
+   * Checks if the user exists and the password is correct
+   * @param user
+   */
   void LoginSuccesfull(mylibrary::User user);
+
+  /**
+   * Draw the page where user can decide which quiz he plans to take
+   */
   void DrawQuizCodePage();
+
+  /**
+   * Draw the page where the user can take the quiz
+   */
   void DrawQuizPage();
+
+  /**
+   * Draws the UI for the homescreen for an instructor
+   */
   void DrawTeacherHomescreen();
+
+  /**
+   * Calculates the total marks for the user in the quiz
+   */
   void EvaluateQuiz();
+
+  /**
+   * Adds the quiz_details to the database
+   */
   void AddQuiz();
 
 

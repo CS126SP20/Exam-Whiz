@@ -3,9 +3,12 @@
 //
 
 #include "../include/mylibrary/user_database.h"
+
 #include <sqlite3.h>
-#include "sqlite3.h"
+
+#include "../../../blocks/Cinder-ImGui/lib/imgui/imgui.h"
 #include "../include/sqlite_modern_cpp.h"
+#include "sqlite3.h"
 
 using namespace sqlite;
 using namespace std;
@@ -13,52 +16,122 @@ using namespace std;
 namespace mylibrary {
 
 UserDatabase::UserDatabase(const string& db_path) : db{db_path} {
-  db << "DROP TABLE user_information";
+  //Creates three defult tables in the database
   db << "CREATE TABLE if not exists user_information (\n"
-    "  username TEXT NOT NULL,\n"
+    "  username TEXT NOT NULL Primary Key,\n"
     "  user_password TEXT NOT NULL,\n"
     "  is_student bool NOT NULL\n"
     ");";
   db << "CREATE TABLE if not exists grades (\n"
-        "  username  TEXT NOT NULL,\n"
+        "  username  TEXT NOT NULL Primary Key,\n"
         "  grade integer NOT NULL,\n"
         "  quiz_code Integer NOT NULL,\n"
         "  max_score Integer NOT NULL\n"
         ");";
-  cout << "table created"  << endl;
+
+  db << "CREATE TABLE if not exists quiz (\n"
+        "  quiz_code  Integer NOT NULL Primary Key,\n"
+        "  quiz_path TEXT NOT NULL,\n"
+        " quiz_creator TEXT Not Null \n"
+        ");";
+
 }
 
-bool UserDatabase::CreateUsername(User user) {
-  string bool_value;
-  if (user.is_student) {
-    bool_value = "true";
-  } else {
-    bool_value = "false";
+bool UserDatabase::CreateUser(User user) {
+  try {
+    string bool_value;
+    if (user.is_student) {
+      bool_value = "true";
+    } else {
+      bool_value = "false";
+    }
+    string query_to_execute = "INSERT INTO user_information (username, user_password, is_student) VALUES(\""
+                              + user.name + "\", \"" + user.password + "\", " + bool_value + ");";
+    db << query_to_execute;
+    return true;
+  } catch (exception e) {
+    cout << e.what();
+    return false;
   }
-  string query_to_execute = "INSERT INTO user_information (username, user_password, is_student) VALUES(\""
-                            + user.name + "\", \"" + user.password + "\", " + bool_value + ");";
-  db << query_to_execute;
 }
 
-string UserDatabase::GetUserPassword(string username) {
+bool UserDatabase::InsertGrades(GradeDetails details) {
+  try {
+    string query_to_execute = "INSERT INTO grades (username, grade, quiz_code, max_score) VALUES(\""
+                              + details.username + "\", " + to_string(details.grade) + ", " + to_string(details.quizcode) + ", " + to_string(details.max_score)  + ");";
+    db << query_to_execute;
+    return true;
+  } catch (exception e) {
+    return false;
+  }
+}
+
+bool UserDatabase::InsertQuiz(QuizDetails quiz) {
+  try {
+    string query_to_execute = "INSERT INTO quiz (quiz_code, quiz_path, quiz_creator) VALUES("
+                              + to_string(quiz.quizcode) + ", \"" + quiz.quiz_path + "\", \"" + quiz.quiz_creator + "\");";
+    db << query_to_execute;
+    return true;
+  } catch (exception e) {
+    return false;
+  }
+}
+
+
+string UserDatabase::GetUserPassword(string username, bool &evaluated_correctly,
+                                     bool &is_student) {
   string to_return;
-  db << "Select user_password from user_information where username = \"" +
-      username + "\";" >> to_return;
-  return to_return;
+  try {
+    db << "Select user_password from user_information where username = \"" +
+          username + "\";" >> to_return;
+    db << "Select is_student from user_information where username = \"" +
+          username + "\";" >> is_student;
+    evaluated_correctly = true;
+    return to_return;
+  } catch (exception e) {
+    evaluated_correctly = false;
+    if (e.what() == "sqlite::errors::no_rows") {
+      cout << "yes";
+    }
+    return "-1";
+  }
+
 }
 
-void UserDatabase::UpdateGrades(User user, Quiz quiz, int user_score) {
-  string query =  "Insert into grades (username, grade, quiz_code, max_score) Values (\"" +
-      user.name + "\", " + to_string(user_score) + ", " + to_string(quiz.quizcode)
-      + ", " + to_string(quiz.maxscore) + ");";
-  db << query;
+string UserDatabase::GetQuizPath(int quiz_code,  bool &evaluated_correctly) {
+  string to_return;
+  try {
+    db << "Select quiz_path from quiz where quiz_code = " +
+          to_string(quiz_code) + ";" >> to_return;
+    evaluated_correctly = true;
+    return to_return;
+  } catch (exception e) {
+    evaluated_correctly = false;
+    if (e.what() == "sqlite::errors::no_rows") {
+      cout << "yes";
+    }
+    return "-1";
+  }
 }
 
-int UserDatabase::GetUserGrade(User user, Quiz quiz) {
-  int to_return;
-  db << "Select grade from grades where username = \"" +
-        user.name + "\" AND quiz_code = " + to_string(quiz.quizcode) + " ;" >> to_return;
-  return to_return;
+
+
+
+bool UserDatabase::ExportGrades(string path, int quiz_code) {
+  try {
+    db << ".headers on\n";
+    db << ".mode csv\n";
+    string query = ".output " + path + "\n";
+    db << query;
+    query = "Select * from grades where quiz_code = " + to_string(quiz_code) + ";";
+    db << query;
+    return true;
+  } catch (exception e) {
+    return false;
+  }
+
+
+  return true;
 }
 
 }

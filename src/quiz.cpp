@@ -27,8 +27,12 @@ namespace mylibrary {
       IStreamWrapper isw(ifs);
       Document json_file;
       json_file.ParseStream(isw);
+      this->quiz_details.quiz_creator = json_file["quizcreator"].GetString();
       this->quiz_details.quizcode = json_file["quizcode"].GetInt();
       this->quiz_details.maxscore = json_file["maxscore"].GetInt();
+      this->quiz_details.quiz_info = json_file["quizinfo"].GetString();
+      this->quiz_details.maxscore = json_file["maxscore"].GetInt();
+
       for (auto question = json_file["Questions"].GetArray().Begin(); question != json_file["Questions"].GetArray().End(); question++) {
         Question q;
         q.is_mcq = question->GetObject()["is_mcq"].GetBool();

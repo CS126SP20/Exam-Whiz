@@ -305,6 +305,5 @@ MyApp::~MyApp() {
   delete quiz_code;
   delete exported_quiz_code;
 }
-void MyApp::keyDown(KeyEvent event) { }
 
 }  // namespace myapp
