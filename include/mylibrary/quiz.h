@@ -24,7 +24,22 @@ namespace mylibrary {
 
    public:
     Quiz() {}
+
+    /**
+    * Extracts the information from the json file and stores the information in
+    * quiz_details and questions
+    * @param json_path The path for the json file you want to extract info from
+    * @param evaluated_correctly Boolean value of if the info was extracted correctly
+     */
     Quiz(const char * json_path,  bool & evaluated_correctly);
+
+   /**
+    * Extracts the information from the json file and stores the information in
+    * quiz_details and questions
+    * @param json_path The path for the json file you want to extract info from
+    * @param evaluated_correctly Boolean value of if the info was extracted correctly
+    * @return
+    */
     int LoadQuiz(const char *  json_path, bool & evaluated_correctly);
     QuizDetails quiz_details;
     vector<Question> questions;
