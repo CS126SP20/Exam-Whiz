@@ -1,0 +1,29 @@
+{
+  "quizcreator": "test",
+  "quizinfo": "test",
+  "quizcode": 1,
+  "maxscore": 1,
+  "Questions": [
+    {
+      "is_mcq": true,
+      "description": "What is the capital of India ?",
+      "correct_option": 2,
+      "correct_answer": "Mumbai",
+      "max_marks": 1,
+      "options": [
+        "Washington DC",
+        "New York",
+        "Delhi",
+        "Mumbai"
+      ]
+    },
+    {
+      "is_mcq": false,
+      "description": "Who is the founder of Apple ?",
+      "correct_option": -1,
+      "correct_answer": "Steve Jobs",
+      "max_marks": 0,
+      "options": []
+    }
+  ]
+}

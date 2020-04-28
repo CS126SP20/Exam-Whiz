@@ -49,7 +49,7 @@
     {
       "is_mcq": true,
       "description": "Is Earth Round ?",
-      "correct_option": 1,
+      "correct_option": 0,
       "correct_answer": "false",
       "max_marks": 20,
       "options": [

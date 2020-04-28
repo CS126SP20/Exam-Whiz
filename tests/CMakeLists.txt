@@ -18,6 +18,7 @@ ci_make_app(
 
 target_compile_features(test PRIVATE cxx_std_14)
 
+
 # Cross-platform compiler lints
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"
         OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
