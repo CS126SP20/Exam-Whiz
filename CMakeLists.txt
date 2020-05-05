@@ -134,3 +134,4 @@ if (NOT sqlite3_POPULATED)
     add_subdirectory(${sqlite3_SOURCE_DIR} ${sqlite3_BINARY_DIR})
     target_include_directories(sqlite3 INTERFACE ${sqlite3_SOURCE_DIR}/src)
 endif ()
+
