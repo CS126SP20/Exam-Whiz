@@ -23,7 +23,7 @@ UserDatabase::UserDatabase(const string& db_path) : db{db_path} {
     "  is_student bool NOT NULL\n"
     ");";
   db << "CREATE TABLE if not exists grades (\n"
-        "  username  TEXT NOT NULL Primary Key,\n"
+        "  username  TEXT NOT NULL,\n"
         "  grade integer NOT NULL,\n"
         "  quiz_code Integer NOT NULL,\n"
         "  max_score Integer NOT NULL\n"
@@ -56,14 +56,11 @@ bool UserDatabase::CreateUser(User user) {
 }
 
 bool UserDatabase::InsertGrades(GradeDetails details) {
-  try {
     string query_to_execute = "INSERT INTO grades (username, grade, quiz_code, max_score) VALUES(\""
                               + details.username + "\", " + to_string(details.grade) + ", " + to_string(details.quizcode) + ", " + to_string(details.max_score)  + ");";
     db << query_to_execute;
     return true;
-  } catch (exception e) {
-    return false;
-  }
+
 }
 
 bool UserDatabase::InsertQuiz(QuizDetails quiz) {
@@ -114,17 +111,24 @@ string UserDatabase::GetQuizPath(int quiz_code,  bool &evaluated_correctly) {
   }
 }
 
-
+int UserDatabase::GetQuizAttempt(int quiz_code, User current_user_) {
+  try {
+    int to_return = 0;
+    string query = "Select count(*) from grades where username = \"" +
+                   current_user_.name +
+                   "\" and quiz_code = " + to_string(quiz_code) + ";";
+    db << query >> to_return;
+    return to_return;
+  } catch (exception e) {
+    return -1;
+  }
+}
 
 
 bool UserDatabase::ExportGrades(string path, int quiz_code) {
   try {
-    db << ".headers on\n";
-    db << ".mode csv\n";
-    string query = ".output " + path + "\n";
-    db << query;
-    query = "Select * from grades where quiz_code = " + to_string(quiz_code) + ";";
-    db << query;
+    string query = "SELECT * from grades;";
+    sqlite::database_binder rows = db << query;
     return true;
   } catch (exception e) {
     return false;

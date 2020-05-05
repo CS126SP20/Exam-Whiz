@@ -4,8 +4,8 @@
 
 #ifndef FINALPROJECT_USER_DATABASE_H
 #define FINALPROJECT_USER_DATABASE_H
-#include <string>;
-#include "../include/sqlite_modern_cpp.h"
+#include <string>
+#include "../../include/sqlite_modern_cpp.h"
 
 using namespace std;
 
@@ -92,6 +92,14 @@ namespace mylibrary {
      * @return The boolean value of if the grades were exported succesfully.
      */
     bool ExportGrades(string path, int quiz_code);
+
+    /**
+     * Return the number of quiz attemots
+     * @param quiz_code the quiz_code
+     * @param current_user_
+     * @return the number of quiz attempts
+     */
+    int GetQuizAttempt(int quiz_code, User current_user_);
   };
 }
 
