@@ -26,6 +26,7 @@ class MyApp : public cinder::app::App {
   int  user_type = 1;
   int * quiz_code = new int;
   int * exported_quiz_code = new int;
+  mylibrary::GradeDetails grade_details;
   string  message_;
   mylibrary::User current_user_;
   ~MyApp();
@@ -99,10 +100,16 @@ class MyApp : public cinder::app::App {
    */
   void AddQuiz();
 
+  /**
+   * Draws the end scrren for a student
+   */
+  void DrawEndScreen();
 
-
-
-  };
+  /**
+   * Draws the json creator
+   */
+  void DrawJsonCreator();
+};
 
 }  // namespace myapp
 

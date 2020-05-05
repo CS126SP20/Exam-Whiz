@@ -21,6 +21,8 @@ bool login_page = true;
 bool quiz_page = true;
 bool quiz_started = true;
 bool teacher_home_screen = true;
+bool json_creator = false;
+bool end_screen = true;
 
 MyApp::MyApp() { }
 
@@ -64,10 +66,29 @@ void MyApp::draw() {
     DrawQuizPage();
   } else if (!current_user_.is_student && teacher_home_screen) {
     DrawTeacherHomescreen();
+  } else if (json_creator) {
+    DrawJsonCreator();
+  } else if (end_screen && current_user_.is_student) {
+    DrawEndScreen();
   }
 
   //ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
   //ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+}
+
+void MyApp::DrawJsonCreator() {
+  ui::Text("Json Creator");
+  ui::NewLine();
+}
+
+void MyApp::DrawEndScreen() {
+  string final_grade = "Your Final Grade was : " + to_string(grade_details.grade) + " on " + to_string(quiz.quiz_details.maxscore);
+  ui::Text(final_grade.c_str());
+  ui::NewLine();
+  ui::NewLine();
+  if (ui::Button("Logout and Exit")) {
+    exit(0);
+  }
 }
 
 void MyApp::DrawTeacherHomescreen() {
@@ -99,6 +120,15 @@ void MyApp::DrawTeacherHomescreen() {
       message_ = "The path given is invalid";
     }
   }
+  ui::NewLine();
+  if (ui::Button("Logout and Exit")) {
+    exit(0);
+  }
+  ui::NewLine();
+  if (ui::Button("Create json file")) {
+
+  }
+  ui::NewLine();
   ui::Text(message_.c_str());
 }
 
@@ -225,6 +255,18 @@ void MyApp::DrawQuizCodePage() {
   }
   ui::NewLine();
   ui::Text(message_.c_str());
+  ui::NewLine();
+  if (ui::Button("Log Out")) {
+    login_page = true;
+    current_user_.is_student = false;
+    current_user_.name = "";
+    current_user_.password = "";
+    strcpy(login_name_, empty_string.c_str());
+    strcpy(login_password_, empty_string.c_str());
+    strcpy(signup_name_, empty_string.c_str());
+    strcpy(signup_password_, empty_string.c_str());
+    strcpy(signup_username_, empty_string.c_str());
+  }
 
 }
 
@@ -268,13 +310,14 @@ void MyApp::EvaluateQuiz() {
       }
     }
   }
-  mylibrary::GradeDetails grade_details;
   grade_details.username = current_user_.name;
   grade_details.quizcode = quiz.quiz_details.quizcode;
   grade_details.max_score = quiz.quiz_details.maxscore;
   grade_details.grade = score;
-  database.InsertGrades(grade_details);
-  cout << score << endl;
+  if (database.InsertGrades(grade_details)) {
+    cout << score << endl;
+  }
+
   quiz_started = false;
 }
 
@@ -283,7 +326,13 @@ void MyApp::SetupQuiz() {
   bool evaluated_correctly = false;
   string quiz_path = database.GetQuizPath(*quiz_code, evaluated_correctly);
   if (evaluated_correctly) {
-    quiz.LoadQuiz(quiz_path.c_str(), evaluated_correctly);
+    int attempts = database.GetQuizAttempt(*quiz_code, current_user_);
+    if (attempts == 0) {
+      quiz.LoadQuiz(quiz_path.c_str(), evaluated_correctly);
+    } else {
+      message_ = "You have already attempted this quiz";
+      return;
+    }
   } else {
     message_ = "The quiz code you have entered is incorrect";
     return;
@@ -307,3 +356,4 @@ MyApp::~MyApp() {
 }
 
 }  // namespace myapp
+
