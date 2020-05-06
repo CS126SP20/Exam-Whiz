@@ -36,10 +36,10 @@ void MyApp::setup() {
   strcpy(signup_username_, empty_string.c_str());
   strcpy(input_json_path_, empty_string.c_str());
   strcpy(input_csv_path_, empty_string.c_str());
-
   *quiz_code = 0;
   *exported_quiz_code = 0;
 
+  // Sets the font to product sans for the UI
   string product_sans_path = "/Users/aryamanparekh/Downloads/Cinder/projects/final-project-aparekh5/assets/product-sans/Product Sans Bold.ttf";
   ui::initialize(ui::Options().font( product_sans_path, 24));
 
@@ -49,10 +49,14 @@ void MyApp::update() { }
 
 void MyApp::draw() {
   int y_offset = -30;
+
+  //Sets the UI to fullscreen
   ImVec2 screen_size(getWindowSize().x, (getWindowSize().y - (2 * y_offset)));
   ui::SetNextWindowSize(screen_size);
   ui::SetNextWindowPos(ImVec2(0, y_offset));
   cinder::gl::clear( Color( 0, 0, 0 ) );
+
+  //Draws the page the user is currently on
   if (login_page) {
     DrawLoginPage();
   } else if (quiz_page && current_user_.is_student) {
@@ -79,6 +83,7 @@ void MyApp::DrawEndScreen() {
 }
 
 void MyApp::DrawTeacherHomescreen() {
+
   ui::Text("Please enter the absolute path for the json file your quiz");
   ui::NewLine();
   ui::InputText("##jsonpath", input_json_path_, 200);
@@ -108,7 +113,20 @@ void MyApp::DrawTeacherHomescreen() {
     }
   }
   ui::NewLine();
-  if (ui::Button("Logout and Exit")) {
+  //Sets the buffer fields to their default values
+  if (ui::Button("Logout")) {
+    login_page = true;
+    current_user_.is_student = false;
+    current_user_.name = "";
+    current_user_.password = "";
+    strcpy(login_name_, empty_string.c_str());
+    strcpy(login_password_, empty_string.c_str());
+    strcpy(signup_name_, empty_string.c_str());
+    strcpy(signup_password_, empty_string.c_str());
+    strcpy(signup_username_, empty_string.c_str());
+  }
+
+  if (ui::Button("Exit")) {
     exit(0);
   }
   ui::NewLine();
@@ -119,6 +137,7 @@ void MyApp::DrawTeacherHomescreen() {
 
 void MyApp::AddQuiz() {
   bool evaluated_correctly = false;
+  //Adds the quiz to the database
   mylibrary::QuizDetails new_quiz;
   new_quiz.quiz_creator = current_user_.name;
   new_quiz.quiz_path = input_json_path_;
@@ -127,7 +146,6 @@ void MyApp::AddQuiz() {
   if (evaluated_correctly) {
     evaluated_correctly = database.InsertQuiz(new_quiz);
     if (evaluated_correctly) {
-      //teacher_home_screen = false;
       message_ = "Quiz was added succesfully. The quiz code/ is " + to_string(*quiz_code);
     } else {
       message_ = "The quiz code has already been used please try again with another quizcode";
@@ -197,7 +215,7 @@ void MyApp::DrawLoginPage() {
 }
 
 void MyApp::Login() {
-
+//Evaluates if the user entered the correct password and if they were able to login successfully
   bool evaluated_correctly_ = false;
   bool is_student = true;
   string actual_password = database.GetUserPassword(login_name_, evaluated_correctly_, is_student);
@@ -216,6 +234,7 @@ void MyApp::Login() {
 }
 
 void MyApp::SignUp() {
+  //Adds the new user details to the database
   mylibrary::User user;
   if (user_type == 2)  {
     user.is_student = false;
@@ -241,6 +260,8 @@ void MyApp::DrawQuizCodePage() {
   ui::NewLine();
   ui::Text(message_.c_str());
   ui::NewLine();
+
+  //Initializes the buffer fields if the user decides to logout
   if (ui::Button("Log Out")) {
     login_page = true;
     current_user_.is_student = false;
@@ -253,9 +274,14 @@ void MyApp::DrawQuizCodePage() {
     strcpy(signup_username_, empty_string.c_str());
   }
 
+  if (ui::Button("Exit")) {
+    exit(0);
+  }
+
 }
 
 void MyApp::DrawQuizPage() {
+  //Draws the Quiz for the student
   ui::Text(quiz.quiz_details.quiz_info.c_str());
   for (int question_num = 0; question_num < quiz.questions.size(); question_num++) {
     mylibrary::Question question = quiz.questions[question_num];
@@ -283,6 +309,7 @@ void MyApp::DrawQuizPage() {
 
 void MyApp::EvaluateQuiz() {
   int score = 0;
+  //Calculates the users score on the quiz and stores it in the database
   for (int question_num = 0; question_num < quiz.questions.size(); question_num++) {
     if (quiz.questions[question_num].is_mcq) {
       if (answers[question_num] == quiz.questions[question_num].correct_option) {
@@ -309,6 +336,7 @@ void MyApp::EvaluateQuiz() {
 
 void MyApp::SetupQuiz() {
   bool evaluated_correctly = false;
+  //Checks if the quizcode the student entered is valid
   string quiz_path = database.GetQuizPath(*quiz_code, evaluated_correctly);
   if (evaluated_correctly) {
     int attempts = database.GetQuizAttempt(*quiz_code, current_user_);
