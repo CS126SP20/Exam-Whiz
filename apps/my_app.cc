@@ -21,7 +21,6 @@ bool login_page = true;
 bool quiz_page = true;
 bool quiz_started = true;
 bool teacher_home_screen = true;
-bool json_creator = false;
 bool end_screen = true;
 
 MyApp::MyApp() { }
@@ -42,12 +41,8 @@ void MyApp::setup() {
   *exported_quiz_code = 0;
 
   string product_sans_path = "/Users/aryamanparekh/Downloads/Cinder/projects/final-project-aparekh5/assets/product-sans/Product Sans Bold.ttf";
-  //std::vector<ImWchar> range
   ui::initialize(ui::Options().font( product_sans_path, 24));
 
-  //ui::GetFont()->Glyphs.push_back(a);
-
-  //ui::Set
 }
 
 void MyApp::update() { }
@@ -66,20 +61,12 @@ void MyApp::draw() {
     DrawQuizPage();
   } else if (!current_user_.is_student && teacher_home_screen) {
     DrawTeacherHomescreen();
-  } else if (json_creator) {
-    DrawJsonCreator();
   } else if (end_screen && current_user_.is_student) {
     DrawEndScreen();
   }
 
-  //ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
-  //ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
 }
 
-void MyApp::DrawJsonCreator() {
-  ui::Text("Json Creator");
-  ui::NewLine();
-}
 
 void MyApp::DrawEndScreen() {
   string final_grade = "Your Final Grade was : " + to_string(grade_details.grade) + " on " + to_string(quiz.quiz_details.maxscore);
@@ -125,9 +112,7 @@ void MyApp::DrawTeacherHomescreen() {
     exit(0);
   }
   ui::NewLine();
-  if (ui::Button("Create json file")) {
 
-  }
   ui::NewLine();
   ui::Text(message_.c_str());
 }

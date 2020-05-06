@@ -4,11 +4,8 @@
 
 #include "../include/mylibrary/user_database.h"
 
-#include <sqlite3.h>
+#include <fstream>
 
-#include "../../../blocks/Cinder-ImGui/lib/imgui/imgui.h"
-#include "../include/sqlite_modern_cpp.h"
-#include "sqlite3.h"
 
 using namespace sqlite;
 using namespace std;
@@ -126,13 +123,24 @@ int UserDatabase::GetQuizAttempt(int quiz_code, User current_user_) {
 
 
 bool UserDatabase::ExportGrades(string path, int quiz_code) {
-  try {
-    string query = "SELECT * from grades;";
-    sqlite::database_binder rows = db << query;
-    return true;
-  } catch (exception e) {
-    return false;
-  }
+    // file pointer
+    fstream fout;
+
+    // opens an existing csv file or creates a new file.
+    fout.open(path, ios::out | ios::app);
+    int num_queries = 0;
+    db << "Select count(*) from grades where quiz_code = " + to_string(quiz_code) + ";" >> num_queries;
+    string username;
+    int score;
+    fout << "Username, Score, Quiz Code \n";
+    for (int i = 0; i < num_queries; i++) {
+      string query = "SELECT username from grades where quiz_code = " + to_string(quiz_code) + " LIMIT 1 OFFSET " + to_string(i) + ";";
+      db << query >> username;
+
+      query = "SELECT grade from grades where quiz_code = " + to_string(quiz_code) + " LIMIT 1 OFFSET " + to_string(i) + ";";
+      db << query >> score;
+      fout << username << ", " << score << ", " <<  quiz_code << "\n";
+    }
 
 
   return true;

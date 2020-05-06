@@ -105,10 +105,6 @@ class MyApp : public cinder::app::App {
    */
   void DrawEndScreen();
 
-  /**
-   * Draws the json creator
-   */
-  void DrawJsonCreator();
 };
 
 }  // namespace myapp
