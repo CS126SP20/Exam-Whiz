@@ -1,7 +1,8 @@
-# Final Project
+# Exam Whiz
 
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![docs](https://img.shields.io/badge/docs-yes-brightgreen)](docs/README.md)
+This project was made for my CS126 Final project and then later the the functionality of this project was extended
 
 The aim for this project is to create an exam system which can help teachers administer tests. The student can login enter the test code and take the test. While the software automatically grades the tests. The teacher can login and see the performances of the class for each question and the test on an average.
 
