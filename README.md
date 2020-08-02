@@ -17,21 +17,21 @@ layout.
 ## Setting up Cinder + Exam System
 * Download Cinder (v0.9.2) for your platform. Extract the downloaded item into a folder. We’ll call this folder ~/Cinder throughout the instructions
 * Open the ~/Cinder folder in CLion and click the green build button. This will build libcinder. You only need to do this once per machine. This build might take a while.
-* Create a directory, say my-projects in ~/Cinder. Clone the snake project into this folder. You can checkout your repository here:
-* Open the exam_system project in CLion, set the target to cinder-myapp and click the run button.
+* Create a directory, say my-projects in ~/Cinder. Clone the Exam-Whiz project into this folder. You can checkout your repository here:
+* Open the Exam-Whiz project in CLion, set the target to cinder-myapp and click the run button.
 
 ### Setting up the Database (SQLite)
 * In CLion, navigate to View > Tool Windows > Database.
 * Next, in the Database window, select the Database properties button, which is between the Refresh and the Stop button.
 * There are two possibilities now: i. If properties for database.db are automatically selected, you can proceed to Step 4. ii. If there are no database properties selected, navigate to Add > SQLite.
 * Next, there should be a highlighted link to download the necessary drivers for SQLite. Click this link.
-* For the file of the datasource, select final-project-aparekh5/assets/database.db.
+* For the file of the datasource, select Exam-Whiz/assets/database.db.
 * Press Test Connection to verify that the driver is set up correctly. Click the OK button in the
-* Now, you should run the cinder-snake target and play the game to test out your database.
-* After the cinder-snake application has run, go back to the Database tab, click the Refresh button. You should now be able to see the schema of the database under database.db > schemas > main
+* Now, you should run the cinder-myapp target and play the game to test out your database.
+* After the cinder-myapp application has run, go back to the Database tab, click the Refresh button. You should now be able to see the schema of the database under database.db > schemas > main
 
 
 ---
-To Directly build and run the application go to final-project > cmake-build-debug > Debug > cinder-myapp > cinder-myapp.app
+To Directly build and run the application go to Exam-Whizt > cmake-build-debug > Debug > cinder-myapp > cinder-myapp.app
 
 **Author**: Aryaman Parekh - [`aparekh5@illinois.edu`](mailto:aparekh5@illinois.edu)
